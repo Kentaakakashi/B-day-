@@ -13,20 +13,30 @@ const ACTIVE_COLORS = PAGE_COLORS[page] || ["#ff69b4", "#ff79c6", "#ff005d"];
 
 /* Ultra-decorated script: cursor, floats, carousel, typewriter, recordings, UI sounds, transitions */
 const CLICK = new Audio('assets/click.mp3');
+const CLICK = new Audio('assets/click.mp3');
 const MUSIC = new Audio('assets/music.mp3');
-MUSIC.loop = true; MUSIC.volume = 0.45;
+MUSIC.loop = true;
+MUSIC.volume = 0.45;
 
-function playClick(){ try{ CLICK.currentTime = 0; CLICK.play(); }catch(e){} }
-
-/* auto-play music on first user interaction (many browsers block autoplay) */
-function initMusicOnFirstInteraction(){
-  function start(){
-    try{ MUSIC.play(); }catch(e){}
-    window.removeEventListener('pointerdown', start);
-  }
-  window.addEventListener('pointerdown', start);
+function playClick(){
+  try{ CLICK.currentTime = 0; CLICK.play(); }catch(e){}
 }
-initMusicOnFirstInteraction();
+
+const stopPages = ["recordings.html", "edit.html"];
+
+if (!stopPages.includes(page)) {
+  function initMusicOnFirstInteraction(){
+    function start(){
+      try{ MUSIC.play(); }catch(e){}
+      window.removeEventListener('pointerdown', start);
+    }
+    window.addEventListener('pointerdown', start);
+  }
+  initMusicOnFirstInteraction();
+} else {
+  MUSIC.pause();
+  MUSIC.currentTime = 0;
+}
 
 /* sparkle cursor */
 (function(){
